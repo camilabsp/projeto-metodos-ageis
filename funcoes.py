@@ -30,7 +30,7 @@ class funcoes:
         self.cursor.execute("""
             CREATE TABLE IF NOT EXISTS bd_dados(
                 data TEXT,
-                codigo TEXT,
+                codigo TEXT PRIMARY KEY,
                 qtd TEXT,
                 valor_unit TEXT,
                 c_v TEXT,

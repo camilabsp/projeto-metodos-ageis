@@ -31,42 +31,46 @@ class app(funcoes):
     def frames(self):
         #frames
         self.frame1 = customtkinter.CTkFrame(self.root)
-        self.frame1.place(relx = 0,rely = 0,relwidth = 1,relheight = 0.18)
+        self.frame1.place(relx = 0,rely = 0,relwidth = 1,relheight = 0.30)
         self.frame2 = customtkinter.CTkFrame(self.root)
-        self.frame2.place(relx = 0,rely =0.18, relwidth = 1, relheight = 0.85)
+        self.frame2.place(relx = 0,rely =0.30, relwidth = 1, relheight = 0.80)
     
     def widgets_frame1(self):
         #labels
+        self.filtrar_ativo = customtkinter.CTkLabel(self.frame1,text='Filtrar Ativo')
+        self.filtrar_ativo.place(relx = 0.05, rely = 0.1)
         self.data = customtkinter.CTkLabel(self.frame1,text='Data')
-        self.data.place(relx = 0.1, rely = 0.1)
+        self.data.place(relx = 0.1, rely = 0.5)
         self.codigo = customtkinter.CTkLabel(self.frame1,text='Código')
-        self.codigo.place(relx = 0.24, rely = 0.1)
+        self.codigo.place(relx = 0.24, rely = 0.5)
         self.qtd = customtkinter.CTkLabel(self.frame1,text='Qtd.')
-        self.qtd.place(relx = 0.38, rely = 0.1)
+        self.qtd.place(relx = 0.38, rely = 0.5)
         self.valor_unit = customtkinter.CTkLabel(self.frame1,text='Valor unit. (R$)')
-        self.valor_unit.place(relx = 0.48, rely = 0.1)
+        self.valor_unit.place(relx = 0.48, rely = 0.5)
         #entrys
+        self.filtrar_ativo_entry = customtkinter.CTkEntry(self.frame1,width=60,placeholder_text='ABCD01')
+        self.filtrar_ativo_entry.place(relx = 0.15, rely = 0.1)
         self.data_entry = customtkinter.CTkEntry(self.frame1,width=90,placeholder_text='dd/mm/aaaa')
-        self.data_entry.place(relx = 0.06, rely = 0.4)
+        self.data_entry.place(relx = 0.06, rely = 0.7)
         self.codigo_entry = customtkinter.CTkEntry(self.frame1, width=80,placeholder_text='AAAA00')
-        self.codigo_entry.place(relx = 0.21, rely = 0.4)
+        self.codigo_entry.place(relx = 0.21, rely = 0.7)
         self.qtd_entry = customtkinter.CTkEntry(self.frame1, width=70)
-        self.qtd_entry.place(relx = 0.35, rely = 0.4)
+        self.qtd_entry.place(relx = 0.35, rely = 0.7)
         self.valor_unit_entry = customtkinter.CTkEntry(self.frame1, width=80)
-        self.valor_unit_entry.place(relx = 0.48, rely = 0.4)
+        self.valor_unit_entry.place(relx = 0.48, rely = 0.7)
         #botão 
         self.bt_add = customtkinter.CTkButton (self.frame1,text = 'Adicionar', width = 70,command=self.adiciona_dados)
-        self.bt_add.place(relx = 0.8, rely = 0.2)
-        self.bt_limpar = customtkinter.CTkButton (self.frame1,text = 'Limpar', width = 70,command=self.limpar_tela)
-        self.bt_limpar.place(relx = 0.8, rely = 0.6)
+        self.bt_add.place(relx = 0.8, rely = 0.5)
+        self.bt_excluir = customtkinter.CTkButton (self.frame1,text = 'Excluir', width = 70,command=self.limpar_tela)
+        self.bt_excluir.place(relx = 0.8, rely = 0.75)
         self.bt_buscar = customtkinter.CTkButton (self.frame1,text = 'Buscar', width = 70,command=self.buscar_ativo)
-        self.bt_buscar.place(relx = 0.9, rely = 0.2)
+        self.bt_buscar.place(relx = 0.25, rely = 0.1)
         #radiobutton
         self.radio_valor = IntVar()
         self.compra =customtkinter.CTkRadioButton(self.frame1,text = 'Comprar', value=1,variable=self.radio_valor)
-        self.compra.place(relx = 0.65, rely = 0.2)
+        self.compra.place(relx = 0.65, rely = 0.55)
         self.venda = customtkinter.CTkRadioButton(self.frame1,text = 'Vender',value=2,variable=self.radio_valor)
-        self.venda.place(relx = 0.65, rely = 0.6) 
+        self.venda.place(relx = 0.65, rely = 0.75) 
         
     def widgets_frame2(self):
         
@@ -95,11 +99,11 @@ class app(funcoes):
         self.tabela_dados.column('#8',width=70)
         self.tabela_dados.column('#9',width=90)
        
-        self.tabela_dados.place(relx = 0.01,rely = 0.01, relwidth=0.98, relheight=0.93)
+        self.tabela_dados.place(relx = 0.01,rely = 0.01, relwidth=0.98, relheight=0.85)
         
         #barra de rolagem
         self.scrol_tab = customtkinter.CTkScrollbar(self.frame2,orientation='vertical')
         self.tabela_dados.configure(yscroll=self.scrol_tab.set)
-        self.scrol_tab.place(relx=0.98,rely=0,relheight=0.94)
+        self.scrol_tab.place(relx=0.98,rely=0,relheight=0.86)
 
 app()
