@@ -1,5 +1,6 @@
 from tkinter import *
 from datetime import *
+from tkinter import messagebox
 import sqlite3 
 
 class funcoes:
@@ -46,35 +47,39 @@ class funcoes:
         self.desconecta_bd
 
     def adiciona_dados(self):
-        
-        self.data = str(self.data_entry.get())
-        self.codigo = self.codigo_entry.get().upper()
-        self.qtd = int(self.qtd_entry.get())
-        self.valor_unit = float(self.valor_unit_entry.get())
-        self.c_v = self.radio_valor.get()
-        
-        self.valor_operacao = round((self.qtd * self.valor_unit),2)
-        self.tx_corret = 5.00
-        self.tx_imposto = round((0.0003 * self.valor_operacao),2)
 
-        if self.c_v == 1:
-            self.c_v = 'Compra'
-            self.valor_final = round((self.valor_operacao + self.tx_corret + self.tx_imposto),2)
+        if self.radio_valor.get() != 1 or self.radio_valor.get() != 2 or self.data_entry.get() == '' or self.codigo_entry.get() == '' or self.valor_unit_entry.get() == '' or self.qtd_entry.get() == '':
+            msg = 'Todos os campos devem ser preenchidos.'
+            messagebox.showinfo('Aviso!',msg)
+        
         else:
-            self.c_v = 'Venda'
-            self.valor_final = round((self.valor_operacao - self.tx_corret - self.tx_imposto),2)
-
+            self.data = str(self.data_entry.get())
+            self.codigo = self.codigo_entry.get().upper()
+            self.qtd = int(self.qtd_entry.get())
+            self.valor_unit = float(self.valor_unit_entry.get())
+            self.c_v = self.radio_valor.get()
         
+            self.valor_operacao = round((self.qtd * self.valor_unit),2)
+            self.tx_corret = 5.00
+            self.tx_imposto = round((0.0003 * self.valor_operacao),2)
 
-        self.conecta_bd()
+            if self.c_v == 1:
+                self.c_v = 'Compra'
+                self.valor_final = round((self.valor_operacao + self.tx_corret + self.tx_imposto),2)
+            elif self.c_v == 2:
+                self.c_v = 'Venda'
+                self.valor_final = round((self.valor_operacao - self.tx_corret - self.tx_imposto),2)
+                
 
-        self.cursor.execute("""INSERT INTO bd_dados(data,codigo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_imposto,valor_final)
-            VALUES (?,?,?,?,?,?,?,?,?)""",(self.data,self.codigo,self.qtd,self.valor_unit,self.c_v,self.valor_operacao,self.tx_corret,self.tx_imposto,self.valor_final)) 
+            self.conecta_bd()
 
-        self.conn.commit()
-        self.desconecta_bd()
-        self.atualiza_tabela()
-        self.limpar_tela()
+            self.cursor.execute("""INSERT INTO bd_dados(data,codigo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_imposto,valor_final)
+                VALUES (?,?,?,?,?,?,?,?,?)""",(self.data,self.codigo,self.qtd,self.valor_unit,self.c_v,self.valor_operacao,self.tx_corret,self.tx_imposto,self.valor_final)) 
+
+            self.conn.commit()
+            self.desconecta_bd()
+            self.atualiza_tabela()
+            self.limpar_tela()
 
     def atualiza_tabela(self):
         self.tabela_dados.delete(*self.tabela_dados.get_children())
@@ -90,7 +95,7 @@ class funcoes:
         self.conecta_bd()
         self.tabela_dados.delete(*self.tabela_dados.get_children()) 
 
-        self.filtrar_ativo_entry.insert(END,'%')
+        self.filtrar_ativo_entry.insert(END,"%")
         filtrar_ativo = self.filtrar_ativo_entry.get()
         self.cursor.execute(
             """SELECT data,codigo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_imposto,valor_final FROM bd_dados WHERE codigo LIKE '%s' ORDER BY data ASC"""  %filtrar_ativo)
