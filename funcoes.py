@@ -19,7 +19,7 @@ class funcoes:
         self.valor_unit_entry.delete(0,END)
 
     def conecta_bd(self):
-        self.conn = sqlite3.connect('bd_dados')
+        self.conn = sqlite3.connect('bd_dado')
         self.cursor = self.conn.cursor()
 
     def desconecta_bd(self):
@@ -29,9 +29,9 @@ class funcoes:
         self.conecta_bd()
         ##criar tabela
         self.cursor.execute("""
-            CREATE TABLE IF NOT EXISTS bd_dados(
+            CREATE TABLE IF NOT EXISTS bd_dado(
                 data TEXT,
-                codigo TEXT PRIMARY KEY,
+                codigo TEXT,
                 qtd TEXT,
                 valor_unit TEXT,
                 c_v TEXT,
@@ -48,11 +48,7 @@ class funcoes:
 
     def adiciona_dados(self):
 
-        if self.radio_valor.get() != 1 or self.radio_valor.get() != 2 or self.data_entry.get() == '' or self.codigo_entry.get() == '' or self.valor_unit_entry.get() == '' or self.qtd_entry.get() == '':
-            msg = 'Todos os campos devem ser preenchidos.'
-            messagebox.showinfo('Aviso!',msg)
         
-        else:
             self.data = str(self.data_entry.get())
             self.codigo = self.codigo_entry.get().upper()
             self.qtd = int(self.qtd_entry.get())
@@ -73,8 +69,8 @@ class funcoes:
 
             self.conecta_bd()
 
-            self.cursor.execute("""INSERT INTO bd_dados(data,codigo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_imposto,valor_final)
-                VALUES (?,?,?,?,?,?,?,?,?)""",(self.data,self.codigo,self.qtd,self.valor_unit,self.c_v,self.valor_operacao,self.tx_corret,self.tx_imposto,self.valor_final)) 
+            self.cursor.execute("""INSERT INTO bd_dado(data,codigo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_imposto,valor_final)
+            VALUES (?,?,?,?,?,?,?,?,?)""",(self.data,self.codigo,self.qtd,self.valor_unit,self.c_v,self.valor_operacao,self.tx_corret,self.tx_imposto,self.valor_final)) 
 
             self.conn.commit()
             self.desconecta_bd()
@@ -85,7 +81,7 @@ class funcoes:
         self.tabela_dados.delete(*self.tabela_dados.get_children())
         self.conecta_bd()
         l = self.cursor.execute(""" SELECT data,codigo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_imposto,valor_final
-            FROM bd_dados ORDER BY data ASC""")
+            FROM bd_dado ORDER BY data ASC""")
         for i in l:
             self.tabela_dados.insert("",END,values=i)
 
@@ -98,7 +94,7 @@ class funcoes:
         self.filtrar_ativo_entry.insert(END,"%")
         filtrar_ativo = self.filtrar_ativo_entry.get()
         self.cursor.execute(
-            """SELECT data,codigo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_imposto,valor_final FROM bd_dados WHERE codigo LIKE '%s' ORDER BY data ASC"""  %filtrar_ativo)
+            """SELECT data,codigo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_imposto,valor_final FROM bd_dado WHERE codigo LIKE '%s' ORDER BY data ASC"""  %filtrar_ativo)
         buscacodigo = self.cursor.fetchall()
         for i in buscacodigo:
             self.tabela_dados.insert("",END,values=i)
