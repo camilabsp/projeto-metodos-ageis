@@ -17,6 +17,7 @@ class app(funcoes):
         self.widgets_frame2()
         self.cria_bd()
         self.atualiza_tabela()
+        self.buscar_ativo()
         root.mainloop()
         
     def tela(self):
@@ -58,6 +59,8 @@ class app(funcoes):
         self.bt_add.place(relx = 0.8, rely = 0.2)
         self.bt_limpar = customtkinter.CTkButton (self.frame1,text = 'Limpar', width = 70,command=self.limpar_tela)
         self.bt_limpar.place(relx = 0.8, rely = 0.6)
+        self.bt_buscar = customtkinter.CTkButton (self.frame1,text = 'Buscar', width = 70,command=self.buscar_ativo)
+        self.bt_buscar.place(relx = 0.9, rely = 0.2)
         #radiobutton
         self.radio_valor = IntVar()
         self.compra =customtkinter.CTkRadioButton(self.frame1,text = 'Comprar', value=1,variable=self.radio_valor)

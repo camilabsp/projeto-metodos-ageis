@@ -85,3 +85,17 @@ class funcoes:
             self.tabela_dados.insert("",END,values=i)
 
         self.desconecta_bd()
+    
+    def buscar_ativo(self):
+        self.conecta_bd()
+        self.tabela_dados.delete(*self.tabela_dados.get_children()) 
+
+        self.codigo_entry.insert(END,'%')
+        codigo = self.codigo_entry.get()
+        self.cursor.execute(
+            """SELECT data,codigo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_imposto,valor_final FROM bd_dados WHERE codigo LIKE '%s' ORDER BY data ASC""" % codigo)
+        buscacodigo = self.cursor.fetchall()
+        for i in buscacodigo:
+            self.tabela_dados.insert("",END,values=i)
+        self.limpar_tela()
+        self.desconecta_bd()
