@@ -4,9 +4,9 @@ from tkinter import messagebox
 import sqlite3 
 
 class funcoes:
-    def __init__(self,data,codigo,qtd,valor_unit,c_v,taxa_corret=5.00):
+    def __init__(self,data,ativo,qtd,valor_unit,c_v,taxa_corret=5.00):
         self.data = data    
-        self.codigo = codigo
+        self.ativo = ativo
         self.qtd = qtd
         self.valor_unit = valor_unit
         self.c_v = c_v
@@ -14,12 +14,12 @@ class funcoes:
 
     def limpar_tela(self):
         self.data_entry.delete(0,END)
-        self.codigo_entry.delete(0,END)
+        self.ativo_entry.delete(0,END)
         self.qtd_entry.delete(0,END)
         self.valor_unit_entry.delete(0,END)
 
     def conecta_bd(self):
-        self.conn = sqlite3.connect('newbd')
+        self.conn = sqlite3.connect('banco.bd')
         self.cursor = self.conn.cursor()
 
     def desconecta_bd(self):
@@ -29,16 +29,16 @@ class funcoes:
         self.conecta_bd()
         ##criar tabela
         self.cursor.execute("""
-            CREATE TABLE IF NOT EXISTS newbd(
+            CREATE TABLE IF NOT EXISTS banco(
                 data TEXT,
-                codigo TEXT,
+                ativo TEXT,
                 qtd TEXT,
                 valor_unit TEXT,
                 c_v TEXT,
                 valor_operacao REAL,
                 tx_corret REAL,
-                tx_imposto REAL,
-                valor_final REAL
+                tx_b3 REAL,
+                valor_total REAL
                 
             );
         """)
@@ -50,27 +50,29 @@ class funcoes:
 
         
             self.data = str(self.data_entry.get())
-            self.codigo = self.codigo_entry.get().upper()
+            self.ativo = self.ativo_entry.get().upper()
             self.qtd = int(self.qtd_entry.get())
             self.valor_unit = float(self.valor_unit_entry.get())
             self.c_v = self.radio_valor.get()
         
             self.valor_operacao = round((self.qtd * self.valor_unit),2)
             self.tx_corret = 5.00
-            self.tx_imposto = round((0.0003 * self.valor_operacao),2)
+            self.tx_b3 = round((0.0003 * self.valor_operacao),2)
 
             if self.c_v == 1:
                 self.c_v = 'C'
-                self.valor_final = round((self.valor_operacao + self.tx_corret + self.tx_imposto),2)
+                self.valor_total = round((self.valor_operacao + self.tx_corret + self.tx_b3),2)
             elif self.c_v == 2:
                 self.c_v = 'V'
-                self.valor_final = round((self.valor_operacao - self.tx_corret - self.tx_imposto),2)
+                self.valor_total = round((self.valor_operacao - self.tx_corret - self.tx_b3),2)
+
+
                 
 
             self.conecta_bd()
 
-            self.cursor.execute("""INSERT INTO newbd(data,codigo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_imposto,valor_final)
-            VALUES (?,?,?,?,?,?,?,?,?)""",(self.data,self.codigo,self.qtd,self.valor_unit,self.c_v,self.valor_operacao,self.tx_corret,self.tx_imposto,self.valor_final)) 
+            self.cursor.execute("""INSERT INTO banco(data,ativo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_b3,valor_total)
+            VALUES (?,?,?,?,?,?,?,?,?)""",(self.data,self.ativo,self.qtd,self.valor_unit,self.c_v,self.valor_operacao,self.tx_corret,self.tx_b3,self.valor_total)) 
 
             self.conn.commit()
             self.desconecta_bd()
@@ -80,8 +82,8 @@ class funcoes:
     def atualiza_tabela(self):
         self.tabela_dados.delete(*self.tabela_dados.get_children())
         self.conecta_bd()
-        l = self.cursor.execute(""" SELECT data,codigo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_imposto,valor_final
-            FROM newbd ORDER BY data ASC""")
+        l = self.cursor.execute(""" SELECT data,ativo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_b3,valor_total
+            FROM banco ORDER BY data ASC""")
         for i in l:
             self.tabela_dados.insert("",END,values=i)
 
@@ -94,9 +96,28 @@ class funcoes:
         self.filtrar_ativo_entry.insert(END,"%")
         filtrar_ativo = self.filtrar_ativo_entry.get()
         self.cursor.execute(
-            """SELECT data,codigo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_imposto,valor_final FROM newbd WHERE codigo LIKE '%s' ORDER BY data ASC""" % filtrar_ativo)
+            """SELECT data,ativo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_b3,valor_total FROM banco WHERE ativo LIKE '%s' ORDER BY data ASC""" % filtrar_ativo)
         buscacodigo = self.cursor.fetchall()
         for i in buscacodigo:
             self.tabela_dados.insert("",END,values=i)
         self.limpar_tela()
         self.desconecta_bd()
+
+    def excluir_dados(self):
+        
+        self.data = self.data_entry.get()
+        self.ativo = self.ativo_entry.get().upper()
+        self.qtd = self.qtd_entry.get()
+        self.valor_unit = self.valor_unit_entry.get()
+        self.c_v = self.radio_valor.get()
+
+        self.conecta_bd()
+
+        self.cursor.execute(""" DELETE FROM banco WHERE ativo = ? """, [self.ativo])
+
+        self.conn.commit()
+
+        self.desconecta_bd()
+        self.limpar_tela()
+        self.atualiza_tabela()
+
