@@ -67,7 +67,8 @@ class funcoes:
                 self.c_v = 'V'
                 self.valor_total = round((self.valor_operacao - self.tx_corret - self.tx_b3),2)
 
-            self.preco_medio = round((self.valor_total/self.qtd),2) #verificar o cálculo de preço médio
+
+            self.preco_medio = self.valor_total/self.qtd #verificar o cálculo de preço médio
                 
             self.conecta_bd()
 
