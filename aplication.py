@@ -75,7 +75,7 @@ class app(funcoes):
     def widgets_frame2(self):
         
         #tabela de dados
-        self.tabela_dados = ttk.Treeview(self.frame2,height = 10,column = ('col1','col2','col3','col4','col5','col6','col7','col9','col10'))
+        self.tabela_dados = ttk.Treeview(self.frame2,height = 11,column = ('col1','col2','col3','col4','col5','col6','col7','col9','col10','col11'))
 
         self.tabela_dados.heading('#0',text='')
         self.tabela_dados.heading('#1',text='Data')
@@ -87,17 +87,19 @@ class app(funcoes):
         self.tabela_dados.heading('#7',text='tx.Corret.')
         self.tabela_dados.heading('#8',text='tx.Imposto')
         self.tabela_dados.heading('#9',text='Valor Final')
+        self.tabela_dados.heading('#10',text='Preço Médio')
 
         self.tabela_dados.column('#0',width=0)
         self.tabela_dados.column('#1',width=60)
-        self.tabela_dados.column('#2',width=70)
-        self.tabela_dados.column('#3',width=50)
-        self.tabela_dados.column('#4',width=70)
-        self.tabela_dados.column('#5',width=60)
+        self.tabela_dados.column('#2',width=50)
+        self.tabela_dados.column('#3',width=40)
+        self.tabela_dados.column('#4',width=60)
+        self.tabela_dados.column('#5',width=30)
         self.tabela_dados.column('#6',width=60)
         self.tabela_dados.column('#7',width=60)
-        self.tabela_dados.column('#8',width=70)
-        self.tabela_dados.column('#9',width=90)
+        self.tabela_dados.column('#8',width=50)
+        self.tabela_dados.column('#9',width=60)
+        self.tabela_dados.column('#10',width=80)
        
         self.tabela_dados.place(relx = 0.01,rely = 0.01, relwidth=0.98, relheight=0.85)
         
