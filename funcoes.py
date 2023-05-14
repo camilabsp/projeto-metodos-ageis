@@ -108,21 +108,24 @@ class funcoes:
         self.limpar_tela()
         self.desconecta_bd()
 
-    def excluir_dados(self):
+    def excluir_registro(self):
         
-        self.data = self.data_entry.get()
-        self.ativo = self.ativo_entry.get().upper()
-        self.qtd = self.qtd_entry.get()
-        self.valor_unit = self.valor_unit_entry.get()
-        self.c_v = self.radio_valor.get()
+        selecao = self.tabela_dados.focus() # Obtem o item selecionado na Tabela de dados
+        
+        if selecao:
+            
+            valores = self.tabela_dados.item(selecao)['values'] # valores dos itens selecionados
+            registro = valores[0]  
 
-        self.conecta_bd()
+            self.conecta_bd()
 
-        self.cursor.execute(""" DELETE FROM dado WHERE ativo = ? """, [self.ativo])
+            self.cursor.execute("DELETE FROM dado WHERE data = ?", (registro,))
+            self.conn.commit()
 
-        self.conn.commit()
+            self.desconecta_bd()
 
-        self.desconecta_bd()
-        self.limpar_tela()
-        self.atualiza_tabela()
+            self.tabela_dados.delete(selecao)
+
+            self.limpar_tela()
+            self.atualiza_tabela() # Atualiza tabela
 

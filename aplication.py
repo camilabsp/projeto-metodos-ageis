@@ -18,7 +18,7 @@ class app(funcoes):
         self.cria_bd()
         self.atualiza_tabela()
         self.buscar_ativo()
-        self.excluir_dados()
+        self.excluir_registro()
         root.mainloop()
         
     def tela(self):
@@ -62,7 +62,7 @@ class app(funcoes):
         #botão 
         self.bt_add = customtkinter.CTkButton (self.frame1,text = 'Adicionar', width = 70,command=self.adiciona_dados)
         self.bt_add.place(relx = 0.8, rely = 0.5)
-        self.bt_excluir = customtkinter.CTkButton (self.frame1,text = 'Excluir', width = 70,command=self.excluir_dados)
+        self.bt_excluir = customtkinter.CTkButton (self.frame1,text = 'Excluir', width = 70,command=self.excluir_registro)
         self.bt_excluir.place(relx = 0.8, rely = 0.75)
         self.bt_buscar = customtkinter.CTkButton (self.frame1,text = 'Buscar', width = 70,command=self.buscar_ativo)
         self.bt_buscar.place(relx = 0.25, rely = 0.1)
