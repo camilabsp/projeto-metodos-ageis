@@ -115,11 +115,11 @@ class funcoes:
         if selecao:
             
             valores = self.tabela_dados.item(selecao)['values'] # valores dos itens selecionados
-            registro = valores[0]  
+            registro = valores[8]  
 
             self.conecta_bd()
 
-            self.cursor.execute("DELETE FROM dado WHERE data = ?", (registro,))
+            self.cursor.execute("DELETE FROM dado WHERE valor_total = ?", (registro,))
             self.conn.commit()
 
             self.desconecta_bd()
