@@ -69,6 +69,8 @@ class funcoes:
 
 
             self.preco_medio = self.valor_total/self.qtd #verificar o cálculo de preço médio
+
+            self.preco_medio = round(self.preco_medio,2)
                 
             self.conecta_bd()
 
