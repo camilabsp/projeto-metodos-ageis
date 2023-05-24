@@ -76,12 +76,9 @@ class funcoes:
             
             if self.c_v ==  2:
                self.preco_medio = f'{md:.2f}'
-            
-            if self.c_v == 1:
-                self.preco_medio = pd
+            else:
+                self.preco_medio = round((self.valor_total / self.qtd),2)
               
-           
-            
                 
             self.conecta_bd()
 
@@ -142,10 +139,6 @@ class funcoes:
             self.limpar_tela()
             self.atualiza_tabela() # Atualiza tabela
 
-    #def BuscarECalcularPrecoMedio(self):
-      # self.conecta_bd()
-
-      # for i in 
-
+    
 
 

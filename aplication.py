@@ -110,3 +110,4 @@ class app(funcoes):
         self.scrol_tab.place(relx=0.98,rely=0,relheight=0.86)
 
 app()
+ 
