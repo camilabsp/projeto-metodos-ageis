@@ -142,6 +142,10 @@ class funcoes:
             self.limpar_tela()
             self.atualiza_tabela() # Atualiza tabela
 
-    #def BuscarECacularPrecoMedio(self, ativo):
-        #for i in 
+    #def BuscarECalcularPrecoMedio(self):
+      # self.conecta_bd()
+
+      # for i in 
+
+
 
