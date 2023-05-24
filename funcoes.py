@@ -3,6 +3,7 @@ from datetime import *
 from tkinter import messagebox
 import sqlite3 
 
+
 class funcoes:
     def __init__(self,data,ativo,qtd,valor_unit,c_v,taxa_corret=5.00):
         self.data = data    
@@ -11,6 +12,8 @@ class funcoes:
         self.valor_unit = valor_unit
         self.c_v = c_v
         self.taxa_corret = taxa_corret
+        self.preco_medio = 0
+        self.valor_total = 0
 
     def limpar_tela(self):
         self.data_entry.delete(0,END)
@@ -49,7 +52,7 @@ class funcoes:
 
     def adiciona_dados(self):
 
-        try:
+        
             self.data = str(self.data_entry.get())
             self.ativo = self.ativo_entry.get().upper()
             self.qtd = int(self.qtd_entry.get())
@@ -66,11 +69,19 @@ class funcoes:
             elif self.c_v == 2:
                 self.c_v = 'V'
                 self.valor_total = round((self.valor_operacao - self.tx_corret - self.tx_b3),2)
-
-
-            self.preco_medio = self.valor_total/self.qtd #verificar o cálculo de preço médio
-
-            self.preco_medio = round(self.preco_medio,2)
+            
+            pd = round((self.valor_total / self.qtd),2)
+            cont = 2 * self.qtd
+            md = ((((pd * self.qtd) + self.valor_total) / cont) - self.tx_b3)
+            
+            if self.c_v ==  2:
+               self.preco_medio = f'{md:.2f}'
+            
+            if self.c_v == 1:
+                self.preco_medio = pd
+              
+           
+            
                 
             self.conecta_bd()
 
@@ -82,9 +93,9 @@ class funcoes:
             self.atualiza_tabela()
             self.limpar_tela()
 
-        except:
-            msg = 'Todos os campos devem ser preenchidos'
-            messagebox.showinfo('Otimizador de Investimentos',msg)
+        
+            #msg = 'Todos os campos devem ser preenchidos'
+            #messagebox.showinfo('Otimizador de Investimentos',msg)
 
     def atualiza_tabela(self):
         self.tabela_dados.delete(*self.tabela_dados.get_children())
@@ -130,4 +141,7 @@ class funcoes:
 
             self.limpar_tela()
             self.atualiza_tabela() # Atualiza tabela
+
+    #def BuscarECacularPrecoMedio(self, ativo):
+        #for i in 
 
