@@ -24,10 +24,10 @@ class app(funcoes):
     def tela(self):
         
         self.root.title('Otimizador de Investimentos')
-        self.root.geometry('700x500')
+        self.root.geometry('900x600')
         self.root.resizable(True,True) #responsividade
-        self.root.maxsize(width=750,height=500)
-        self.root.minsize(width=500, height=400)
+        self.root.maxsize(width=850,height=500)
+        self.root.minsize(width=800, height=500)
         
     def frames(self):
         #frames
@@ -72,11 +72,12 @@ class app(funcoes):
         self.compra.place(relx = 0.65, rely = 0.55)
         self.venda = customtkinter.CTkRadioButton(self.frame1,text = 'Vender',value=2,variable=self.radio_valor)
         self.venda.place(relx = 0.65, rely = 0.75) 
+
         
     def widgets_frame2(self):
         
         #tabela de dados
-        self.tabela_dados = ttk.Treeview(self.frame2,height = 11,column = ('col1','col2','col3','col4','col5','col6','col7','col9','col10','col11'))
+        self.tabela_dados = ttk.Treeview(self.frame2,height = 11,column = ('col1','col2','col3','col4','col5','col6','col7','col9','col10','col11','col12','col13'))
 
         self.tabela_dados.heading('#0',text='')
         self.tabela_dados.heading('#1',text='Data')
@@ -89,18 +90,22 @@ class app(funcoes):
         self.tabela_dados.heading('#8',text='taxa B3')
         self.tabela_dados.heading('#9',text='Valor Total')
         self.tabela_dados.heading('#10',text='Preço Médio')
+        self.tabela_dados.heading('#11',text='LP')
+        self.tabela_dados.heading('#12',text='Status')
 
         self.tabela_dados.column('#0',width=0)
         self.tabela_dados.column('#1',width=60)
         self.tabela_dados.column('#2',width=50)
         self.tabela_dados.column('#3',width=40)
-        self.tabela_dados.column('#4',width=60)
+        self.tabela_dados.column('#4',width=55)
         self.tabela_dados.column('#5',width=30)
-        self.tabela_dados.column('#6',width=60)
-        self.tabela_dados.column('#7',width=60)
-        self.tabela_dados.column('#8',width=50)
+        self.tabela_dados.column('#6',width=55)
+        self.tabela_dados.column('#7',width=55)
+        self.tabela_dados.column('#8',width=45)
         self.tabela_dados.column('#9',width=60)
-        self.tabela_dados.column('#10',width=80)
+        self.tabela_dados.column('#10',width=65)
+        self.tabela_dados.column('#11',width=40)
+        self.tabela_dados.column('#12',width=60)
        
         self.tabela_dados.place(relx = 0.01,rely = 0.01, relwidth=0.98, relheight=0.85)
         
@@ -108,5 +113,11 @@ class app(funcoes):
         self.scrol_tab = customtkinter.CTkScrollbar(self.frame2,orientation='vertical')
         self.tabela_dados.configure(yscroll=self.scrol_tab.set)
         self.scrol_tab.place(relx=0.98,rely=0,relheight=0.86)
+
+        #filtro
+        #self.combobox = ttk.Combobox(self.frame1,textvariable='Filtro',value= 'ITSA4')
+        #self.combobox.place(relx=0.4,rely=0.2)
+        #self.combobox.bind("<<ComboboxSelected>>", self.buscar_ativo)
+        
 
 app()

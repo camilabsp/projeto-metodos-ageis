@@ -19,7 +19,7 @@ class funcoes:
         self.valor_unit_entry.delete(0,END)
 
     def conecta_bd(self):
-        self.conn = sqlite3.connect('dado.bd')
+        self.conn = sqlite3.connect('bbbb.bd')
         self.cursor = self.conn.cursor()
 
     def desconecta_bd(self):
@@ -29,7 +29,7 @@ class funcoes:
         self.conecta_bd()
         ##criar tabela
         self.cursor.execute("""
-            CREATE TABLE IF NOT EXISTS dado(
+            CREATE TABLE IF NOT EXISTS bbbb(
                 data TEXT,
                 ativo TEXT,
                 qtd TEXT,
@@ -39,7 +39,9 @@ class funcoes:
                 tx_corret REAL,
                 tx_b3 REAL,
                 valor_total REAL,
-                preco_medio REAL
+                preco_medio REAL,
+                lucro_prejuizo REAL,
+                status TEXT
                 
             );
         """)
@@ -49,7 +51,7 @@ class funcoes:
 
     def adiciona_dados(self):
 
-        try:
+        #try:
             self.data = str(self.data_entry.get())
             self.ativo = self.ativo_entry.get().upper()
             self.qtd = int(self.qtd_entry.get())
@@ -66,38 +68,31 @@ class funcoes:
             elif self.c_v == 2:
                 self.c_v = 'V'
                 self.valor_total = round((self.valor_operacao - self.tx_corret - self.tx_b3),2)
-
-
-            cont = 200
-        
-            self.preco_medio = 8.03
-
-            if self.c_v == 'C':
-                self.preco_medio = round((self.valor_total + (cont * self.preco_medio))/(cont + self.qtd),2)
-                cont += self.qtd
-
-            elif self.c_v == 'V':
-                self.preco_medio = round(((self.valor_total / self.qtd) - self.tx_b3),2)
                 
+
+            self.calculo_preco_medio()
+
+            self.calculo_lucro_prejuizo()
+
             self.conecta_bd()
 
-            self.cursor.execute("""INSERT INTO dado(data,ativo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_b3,valor_total,preco_medio)
-            VALUES (?,?,?,?,?,?,?,?,?,?)""",(self.data,self.ativo,self.qtd,self.valor_unit,self.c_v,self.valor_operacao,self.tx_corret,self.tx_b3,self.valor_total,self.preco_medio)) 
+            self.cursor.execute("""INSERT INTO bbbb(data,ativo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_b3,valor_total,preco_medio,lucro_prejuizo,status)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?)""",(self.data,self.ativo,self.qtd,self.valor_unit,self.c_v,self.valor_operacao,self.tx_corret,self.tx_b3,self.valor_total,self.preco_medio,self.lucro_prejuizo,self.status)) 
 
             self.conn.commit()
             self.desconecta_bd()
             self.atualiza_tabela()
             self.limpar_tela()
 
-        except:
-            msg = 'Todos os campos devem ser preenchidos'
-            messagebox.showinfo('Otimizador de Investimentos',msg)
+        #except:
+            #msg = 'Todos os campos devem ser preenchidos'
+            #messagebox.showinfo('Otimizador de Investimentos',msg)
 
     def atualiza_tabela(self):
         self.tabela_dados.delete(*self.tabela_dados.get_children())
         self.conecta_bd()
-        l = self.cursor.execute(""" SELECT data,ativo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_b3,valor_total,preco_medio
-            FROM dado ORDER BY data ASC""")
+        l = self.cursor.execute(""" SELECT data,ativo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_b3,valor_total,preco_medio,lucro_prejuizo,status
+            FROM bbbb ORDER BY data ASC""")
         for i in l:
             self.tabela_dados.insert("",END,values=i)
 
@@ -110,10 +105,11 @@ class funcoes:
         self.filtrar_ativo_entry.insert(END,"%")
         filtrar_ativo = self.filtrar_ativo_entry.get()
         self.cursor.execute(
-            """SELECT data,ativo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_b3,valor_total,preco_medio FROM dado WHERE ativo LIKE '%s' ORDER BY data ASC""" % filtrar_ativo)
+            """SELECT data,ativo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_b3,valor_total,preco_medio,lucro_prejuizo,status FROM bbbb WHERE ativo LIKE '%s' ORDER BY data ASC""" % filtrar_ativo)
         buscacodigo = self.cursor.fetchall()
         for i in buscacodigo:
             self.tabela_dados.insert("",END,values=i)
+
         self.limpar_tela()
         self.desconecta_bd()
 
@@ -128,7 +124,7 @@ class funcoes:
 
             self.conecta_bd()
 
-            self.cursor.execute("DELETE FROM dado WHERE valor_total = ?", (registro,))
+            self.cursor.execute("DELETE FROM bbbb WHERE valor_total = ?", (registro,))
             self.conn.commit()
 
             self.desconecta_bd()
@@ -138,3 +134,52 @@ class funcoes:
             self.limpar_tela()
             self.atualiza_tabela() # Atualiza tabela
 
+    def calculo_preco_medio(self):
+
+        cont = self.qtd
+        self.preco_medio = round(self.valor_total/self.qtd,2)
+        
+        self.tabela_dados.delete(*self.tabela_dados.get_children())
+        self.conecta_bd()
+        d = self.cursor.execute(""" SELECT data,ativo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_b3,valor_total,preco_medio,lucro_prejuizo,status
+            FROM bbbb ORDER BY data ASC""")
+        for i in d:
+            self.tabela_dados.insert("",END,values=i)
+
+            if str(i[4]) == 'C':
+                self.preco_medio = round((int(i[8]) + (cont* self.preco_medio))/(cont + int(i[2])),2)
+                cont += int(i[2])
+                
+            elif str(i[4]) == 'V':
+                cont = cont - int(i[2])
+                
+                
+        self.limpar_tela()
+        self.atualiza_tabela()
+        self.desconecta_bd()
+
+    def calculo_lucro_prejuizo(self):
+
+        self.lucro_prejuizo = 0
+        self.status = '-'
+
+        self.tabela_dados.delete(*self.tabela_dados.get_children())
+        self.conecta_bd()
+        d = self.cursor.execute(""" SELECT data,ativo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_b3,valor_total,preco_medio,lucro_prejuizo,status
+            FROM bbbb ORDER BY data ASC""")
+        for i in d:
+            self.tabela_dados.insert("",END,values=i)
+
+            if self.c_v == 'V':
+                self.lucro_prejuizo = round(self.valor_total - (int(i[2]) * i[9]),2)
+            
+            else:
+                self.lucro_prejuizo = 0
+                self.status = '-'
+     
+        self.limpar_tela()
+        self.atualiza_tabela()
+        self.desconecta_bd()
+
+
+   
