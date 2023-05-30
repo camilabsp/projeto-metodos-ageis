@@ -92,7 +92,7 @@ class funcoes:
         self.tabela_dados.delete(*self.tabela_dados.get_children())
         self.conecta_bd()
         l = self.cursor.execute(""" SELECT data,ativo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_b3,valor_total,preco_medio,lucro_prejuizo,status
-            FROM banco_dados ORDER BY data ASC""")
+            FROM banco_dados ORDER BY data DESC""")
         for i in l:
             self.tabela_dados.insert("",END,values=i)
 
@@ -105,7 +105,7 @@ class funcoes:
         self.filtrar_ativo_entry.insert(END,"%")
         filtrar_ativo = self.filtrar_ativo_entry.get()
         self.cursor.execute(
-            """SELECT data,ativo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_b3,valor_total,preco_medio,lucro_prejuizo,status FROM banco_dados WHERE ativo LIKE '%s' ORDER BY data ASC""" % filtrar_ativo)
+            """SELECT data,ativo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_b3,valor_total,preco_medio,lucro_prejuizo,status FROM banco_dados WHERE ativo LIKE '%s' ORDER BY data DESC""" % filtrar_ativo)
         buscacodigo = self.cursor.fetchall()
         for i in buscacodigo:
             self.tabela_dados.insert("",END,values=i)
@@ -142,7 +142,7 @@ class funcoes:
         self.tabela_dados.delete(*self.tabela_dados.get_children())
         self.conecta_bd()
         d = self.cursor.execute(""" SELECT data,ativo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_b3,valor_total,preco_medio,lucro_prejuizo,status
-            FROM banco_dados ORDER BY data ASC""")
+            FROM banco_dados ORDER BY data DESC""")
         for i in d:
             self.tabela_dados.insert("",END,values=i)
 
@@ -166,7 +166,7 @@ class funcoes:
         self.tabela_dados.delete(*self.tabela_dados.get_children())
         self.conecta_bd()
         d = self.cursor.execute(""" SELECT data,ativo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_b3,valor_total,preco_medio,lucro_prejuizo,status
-            FROM banco_dados ORDER BY data ASC""")
+            FROM banco_dados ORDER BY data DESC""")
         for i in d:
             self.tabela_dados.insert("",END,values=i)
 
@@ -183,7 +183,4 @@ class funcoes:
      
         self.limpar_tela()
         self.atualiza_tabela()
-        self.desconecta_bd()
-
-
-   
+        self.desconecta_bd()   
