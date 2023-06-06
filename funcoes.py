@@ -1,5 +1,6 @@
 from tkinter import *
 from datetime import *
+from tkinter import ttk
 from tkinter import messagebox
 import sqlite3 
 
@@ -51,7 +52,7 @@ class funcoes:
 
     def adiciona_dados(self):
 
-        try:
+        #try:
             self.data = str(self.data_entry.get())
             self.ativo = self.ativo_entry.get().upper()
             self.qtd = int(self.qtd_entry.get())
@@ -74,6 +75,8 @@ class funcoes:
 
             self.calculo_lucro_prejuizo()
 
+            self.lp_carteira()
+
             self.conecta_bd()
 
             self.cursor.execute("""INSERT INTO banco_dados(data,ativo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_b3,valor_total,preco_medio,lucro_prejuizo,status)
@@ -84,9 +87,9 @@ class funcoes:
             self.atualiza_tabela()
             self.limpar_tela()
 
-        except:
-            msg = 'Todos os campos devem ser preenchidos'
-            messagebox.showinfo('Otimizador de Investimentos',msg)
+        #except:
+            #msg = 'Todos os campos devem ser preenchidos'
+            #messagebox.showinfo('Otimizador de Investimentos',msg)
 
     def atualiza_tabela(self):
         self.tabela_dados.delete(*self.tabela_dados.get_children())
@@ -99,7 +102,11 @@ class funcoes:
         self.desconecta_bd()
     
     def buscar_ativo(self):
+
         self.conecta_bd()
+
+        self.total_lp = 0
+
         self.tabela_dados.delete(*self.tabela_dados.get_children()) 
 
         self.filtrar_ativo_entry.insert(END,"%")
@@ -109,6 +116,9 @@ class funcoes:
         buscacodigo = self.cursor.fetchall()
         for i in buscacodigo:
             self.tabela_dados.insert("",END,values=i)
+            self.total_lp = self.total_lp + i[10]
+    
+        print(self.total_lp)
 
         self.limpar_tela()
         self.desconecta_bd()
@@ -183,4 +193,23 @@ class funcoes:
      
         self.limpar_tela()
         self.atualiza_tabela()
-        self.desconecta_bd()   
+        self.desconecta_bd()  
+
+    def lp_carteira(self):
+
+        self.soma = self.lucro_prejuizo
+        
+        self.tabela_dados.delete(*self.tabela_dados.get_children())
+        self.conecta_bd()
+        d = self.cursor.execute(""" SELECT data,ativo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_b3,valor_total,preco_medio,lucro_prejuizo,status
+            FROM banco_dados ORDER BY data DESC""")
+        for i in d:
+            self.tabela_dados.insert("",END,values=i)
+
+            self.soma = self.soma + (i[10])
+
+            
+
+        self.limpar_tela()
+        self.atualiza_tabela()
+        self.desconecta_bd()
