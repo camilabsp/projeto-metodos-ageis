@@ -108,6 +108,7 @@ class funcoes:
         self.total_lp = 0
 
         self.tabela_dados.delete(*self.tabela_dados.get_children()) 
+        
 
         self.filtrar_ativo_entry.insert(END,"%")
         filtrar_ativo = self.filtrar_ativo_entry.get()
@@ -117,7 +118,9 @@ class funcoes:
         for i in buscacodigo:
             self.tabela_dados.insert("",END,values=i)
             self.total_lp = self.total_lp + i[10]
-    
+            self.tabela_soma.delete(*self.tabela_soma.get_children())
+            self.tabela_soma.insert("", END, values=self.total_lp)
+
         print(self.total_lp)
 
         self.limpar_tela()
@@ -200,6 +203,7 @@ class funcoes:
         self.soma = self.lucro_prejuizo
         
         self.tabela_dados.delete(*self.tabela_dados.get_children())
+        self.tabela_soma.delete(*self.tabela_soma.get_children())
         self.conecta_bd()
         d = self.cursor.execute(""" SELECT data,ativo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_b3,valor_total,preco_medio,lucro_prejuizo,status
             FROM banco_dados ORDER BY data DESC""")
@@ -207,6 +211,8 @@ class funcoes:
             self.tabela_dados.insert("",END,values=i)
 
             self.soma = self.soma + (i[10])
+
+            self.tabela_soma.insert("", END, values=(self.soma))
 
         print(self.soma)
 

@@ -118,18 +118,26 @@ class app(funcoes):
         self.scrol_tab.place(relx=0.98,rely=0,relheight=0.9)
 
         #label
-        self.label_total_carteira = customtkinter.CTkLabel(self.frame2,text='Total L/P carteira:')
-        self.label_total_carteira.place(relx=0.7,rely=0.9)
+        #self.label_total_carteira = customtkinter.CTkLabel(self.frame2,text='Total L/P carteira:')
+        #self.label_total_carteira.place(relx=0.7,rely=0.9)
 
-        
+        self.table1()
 
-    def table(self):
+    def table1(self):
 
         self.tabela_soma = ttk.Treeview(self.frame2,height=1,columns=('col1'))
         self.tabela_soma['columns'] = ('soma')
         self.tabela_soma.heading('soma', text='Total L/P Carteira')
         
-        self.tabela_soma.place(relx = 0.5,rely = 0.5)
+        self.tabela_soma.place(relx = 0.5,rely = 0.76)
+
+    def table2(self):
+
+        self.tabela_soma = ttk.Treeview(self.root2,height=1,columns=('col1'))
+        self.tabela_soma['columns'] = ('total_lp')
+        self.tabela_soma.heading('total_lp', text='Total L/P ')
+        
+        self.tabela_soma.place(relx = 0.48,rely = 0.8)
 
 
     def janela2(self):
@@ -177,8 +185,10 @@ class app(funcoes):
        
         self.tabela_dados.place(relx = 0.01,rely = 0.2, relwidth=0.98, relheight=0.7)
 
-        self.label_total = customtkinter.CTkLabel(self.root2,text='Total L/P:')
-        self.label_total.place(relx=0.75,rely=0.92)
+        #self.label_total = customtkinter.CTkLabel(self.root2,text='Total L/P:')
+        #self.label_total.place(relx=0.75,rely=0.92)
+
+        self.table2()
 
     def menus(self):
         menubar = Menu(self.root)
