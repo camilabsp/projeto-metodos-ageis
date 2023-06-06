@@ -208,7 +208,7 @@ class funcoes:
 
             self.soma = self.soma + (i[10])
 
-            
+        print(self.soma)
 
         self.limpar_tela()
         self.atualiza_tabela()
