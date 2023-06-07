@@ -80,7 +80,7 @@ class app(funcoes):
     def widgets_frame2(self):
         
         #tabela de dados
-        self.tabela_dados = ttk.Treeview(self.frame2,height = 11,column = ('col1','col2','col3','col4','col5','col6','col7','col9','col10','col11','col12','col13'))
+        self.tabela_dados = ttk.Treeview(self.frame2,height = 11,column = ('col1','col2','col3','col4','col5','col6','col7','col9','col10','col11','col12'))
 
         self.tabela_dados.heading('#0',text='')
         self.tabela_dados.heading('#1',text='Data')
@@ -93,8 +93,7 @@ class app(funcoes):
         self.tabela_dados.heading('#8',text='taxa B3')
         self.tabela_dados.heading('#9',text='Valor Total')
         self.tabela_dados.heading('#10',text='Preço Médio')
-        self.tabela_dados.heading('#11',text='LP')
-        self.tabela_dados.heading('#12',text='Status')
+        self.tabela_dados.heading('#11',text='L/P')
 
         self.tabela_dados.column('#0',width=0)
         self.tabela_dados.column('#1',width=60)
@@ -107,8 +106,8 @@ class app(funcoes):
         self.tabela_dados.column('#8',width=45)
         self.tabela_dados.column('#9',width=60)
         self.tabela_dados.column('#10',width=65)
-        self.tabela_dados.column('#11',width=40)
-        self.tabela_dados.column('#12',width=60)
+        self.tabela_dados.column('#11',width=50)
+       
        
         self.tabela_dados.place(relx = 0.01,rely = 0.01, relwidth=0.98, relheight=0.88)
         
