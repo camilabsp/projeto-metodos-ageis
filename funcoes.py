@@ -70,7 +70,11 @@ class funcoes:
                 self.valor_total = round((self.valor_operacao - self.tx_corret - self.tx_b3),2)
                 
 
-            self.calculo_preco_medio()
+            if self.ativo == 'ITSA4':
+                self.itsa4()
+                    
+            elif self.ativo == 'WEGE3':
+                self.wege3()
 
             self.calculo_lucro_prejuizo()
 
@@ -117,6 +121,7 @@ class funcoes:
         for i in buscacodigo:
             self.tabela_dados.insert("",END,values=i)
             self.total_lp = self.total_lp + i[10]
+            self.total_lp = round(self.total_lp,2)
             self.tabela_soma.delete(*self.tabela_soma.get_children())
             self.tabela_soma.insert("", END, values=self.total_lp)
 
@@ -181,13 +186,12 @@ class funcoes:
             FROM bd ORDER BY DATE (data) ASC""")
         for i in d:
             self.tabela_dados.insert("",END,values=i)
-
             if self.c_v == 'V':
-                self.lucro_prejuizo = round(self.valor_total - (int(i[2]) * i[9]),2)
-            else:
+                self.lucro_prejuizo = self.valor_total - (float(i[2]) * self.preco_medio)
+                self.lucro_prejuizo = round(self.lucro_prejuizo)
+            elif self.c_v == 'C':
                 self.lucro_prejuizo = 0
                 
-     
         self.limpar_tela()
         self.atualiza_tabela()
         self.desconecta_bd()  
@@ -205,11 +209,58 @@ class funcoes:
             self.tabela_dados.insert("",END,values=i)
 
             self.soma = self.soma + (i[10])
+            self.soma = round(self.soma,2)
             self.tabela_soma.delete(*self.tabela_soma.get_children())
             self.tabela_soma.insert("", END, values=(round(self.soma,2)))
 
-        print(self.soma)
+        self.limpar_tela()
+        self.atualiza_tabela()
+        self.desconecta_bd()
 
+    def itsa4(self):
+
+        cont = self.qtd
+        self.preco_medio = round(self.valor_total/self.qtd,2)
+        
+        self.tabela_dados.delete(*self.tabela_dados.get_children())
+        self.conecta_bd()
+        d = self.cursor.execute(""" SELECT data,ativo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_b3,valor_total,preco_medio,lucro_prejuizo
+            FROM bd ORDER BY DATE (data) ASC""")
+        for i in d:
+            self.tabela_dados.insert("",END,values=i)
+
+            if (str(i[4]) == 'C' and str(i[1]) == 'ITSA4'):
+                    self.preco_medio = round((int(i[8]) + (cont* self.preco_medio))/  (cont + int(i[2])),2)
+                    cont += int(i[2])
+                
+            elif (str(i[4]) == 'V' and str(i[1]) == 'ITSA4'):
+                cont = cont - int(i[2])
+                self.lucro_prejuizo = self.valor_total - (int(i[2]) * self.preco_medio)
+                
+        self.limpar_tela()
+        self.atualiza_tabela()
+        self.desconecta_bd()
+
+    def wege3(self):
+
+        cont = self.qtd
+        self.preco_medio = round(self.valor_total/self.qtd,2)
+        
+        self.tabela_dados.delete(*self.tabela_dados.get_children())
+        self.conecta_bd()
+        d = self.cursor.execute(""" SELECT data,ativo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_b3,valor_total,preco_medio,lucro_prejuizo
+            FROM bd ORDER BY DATE (data) ASC""")
+        for i in d:
+            self.tabela_dados.insert("",END,values=i)
+
+            if (str(i[4]) == 'C' and str(i[1]) == 'WEGE3'):
+                self.preco_medio = round((int(i[8]) + (cont* self.preco_medio))/(cont + int(i[2])),2)
+                cont += int(i[2])
+
+            elif (str(i[4]) == 'V' and str(i[1]) == 'WEGE3'):
+                cont = cont - int(i[2])
+                self.lucro_prejuizo = self.valor_total - (int(i[2]) * self.preco_medio)
+                
         self.limpar_tela()
         self.atualiza_tabela()
         self.desconecta_bd()
