@@ -128,17 +128,19 @@ class app(funcoes):
 
         self.tabela_soma = ttk.Treeview(self.frame2,height=1,columns=('col1'))
         self.tabela_soma['columns'] = ('soma')
+        self.tabela_soma.column('#0',width=0)
+        self.tabela_soma.column('#1',width=130)
         self.tabela_soma.heading('soma', text='Total L/P Carteira')
-        
-        self.tabela_soma.place(relx = 0.5,rely = 0.76)
+        self.tabela_soma.place(relx = 0.82,rely = 0.76)
 
     def table2(self):
 
         self.tabela_soma = ttk.Treeview(self.root2,height=1,columns=('col1'))
         self.tabela_soma['columns'] = ('total_lp')
+        self.tabela_soma.column('#0',width=0)
+        self.tabela_soma.column('#1',width=130)
         self.tabela_soma.heading('total_lp', text='Total L/P ')
-        
-        self.tabela_soma.place(relx = 0.48,rely = 0.8)
+        self.tabela_soma.place(relx = 0.82,rely = 0.795)
 
 
     def janela2(self):

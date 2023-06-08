@@ -231,8 +231,8 @@ class funcoes:
             self.tabela_dados.insert("",END,values=i)
 
             if (str(i[4]) == 'C' and str(i[1]) == 'ITSA4'):
-                    self.preco_medio = round((int(i[8]) + (cont* self.preco_medio))/  (cont + int(i[2])),2)
-                    cont += int(i[2])
+                self.preco_medio = round((int(i[8]) + (cont* self.preco_medio))/  (cont + int(i[2])),2)
+                cont += int(i[2])
                 
             elif (str(i[4]) == 'V' and str(i[1]) == 'ITSA4'):
                 cont = cont - int(i[2])
