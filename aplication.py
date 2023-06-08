@@ -50,8 +50,8 @@ class app(funcoes):
         self.qtd.place(relx = 0.315, rely = 0.1)
         self.valor_unit = customtkinter.CTkLabel(self.frame1,text='Valor unit. (R$)')
         self.valor_unit.place(relx = 0.4, rely = 0.1)
-        #self.tx_corret = customtkinter.CTkLabel(self.frame1,text='Tx.Corret. (R$)')
-        #self.tx_corret.place(relx = 0.55, rely = 0.1)
+        self.tx_corret = customtkinter.CTkLabel(self.frame1,text='Tx.Corret. (R$)')
+        self.tx_corret.place(relx = 0.525, rely = 0.1)
         #entrys
         self.filtrar_ativo_entry = customtkinter.CTkEntry(self.frame1,width=60,placeholder_text='ABCD01')
         #self.filtrar_ativo_entry.place(relx = 0.15, rely = 0.1)
@@ -63,6 +63,8 @@ class app(funcoes):
         self.qtd_entry.place(relx = 0.29, rely = 0.3)
         self.valor_unit_entry = customtkinter.CTkEntry(self.frame1, width=80)
         self.valor_unit_entry.place(relx = 0.40, rely = 0.3)
+        self.tx_corret_entry = customtkinter.CTkEntry(self.frame1, width=80)
+        self.tx_corret_entry.place(relx = 0.525, rely = 0.3)
         #botão 
         self.bt_add = customtkinter.CTkButton (self.frame1,text = 'Adicionar', width = 70,command=self.adiciona_dados)
         self.bt_add.place(relx = 0.8, rely = 0.15)

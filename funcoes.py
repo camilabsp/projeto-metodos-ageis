@@ -57,9 +57,10 @@ class funcoes:
             self.qtd = int(self.qtd_entry.get())
             self.valor_unit = float(self.valor_unit_entry.get())
             self.c_v = self.radio_valor.get()
+            self.tx_corret = float(self.tx_corret_entry.get())
         
             self.valor_operacao = round((self.qtd * self.valor_unit),2)
-            self.tx_corret = 5.00
+            #self.tx_corret = 5.00
             self.tx_b3 = round((0.0003 * self.valor_operacao),2)
 
             if self.c_v == 1:
