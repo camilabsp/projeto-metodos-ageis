@@ -75,9 +75,9 @@ class app(funcoes):
         #radiobutton
         self.radio_valor = IntVar()
         self.compra = customtkinter.CTkRadioButton(self.frame1,text = 'Comprar', value=1,variable=self.radio_valor)
-        self.compra.place(relx = 0.65, rely = 0.15)
+        self.compra.place(relx = 0.67, rely = 0.15)
         self.venda = customtkinter.CTkRadioButton(self.frame1,text = 'Vender',value=2,variable=self.radio_valor)
-        self.venda.place(relx = 0.65, rely = 0.4) 
+        self.venda.place(relx = 0.67, rely = 0.4) 
       
     def widgets_frame2(self):
         
