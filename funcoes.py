@@ -77,6 +77,9 @@ class funcoes:
             elif self.ativo == 'WEGE3':
                 self.wege3()
 
+            elif self.ativo == 'PETR4':
+                self.petr4()
+
             self.calculo_lucro_prejuizo()
 
             self.lp_carteira()
@@ -125,8 +128,6 @@ class funcoes:
             self.total_lp = round(self.total_lp,2)
             self.tabela_soma.delete(*self.tabela_soma.get_children())
             self.tabela_soma.insert("", END, values=self.total_lp)
-
-        print(self.total_lp)
 
         self.limpar_tela()
         self.desconecta_bd()
@@ -235,9 +236,9 @@ class funcoes:
                 cont += int(i[2])
                 
             elif (str(i[4]) == 'V' and str(i[1]) == 'ITSA4'):
-                cont = cont - int(i[2])
-                self.lucro_prejuizo = self.valor_total - (int(i[2]) * self.preco_medio)
-                
+                cont -= int(i[2])
+         
+
         self.limpar_tela()
         self.atualiza_tabela()
         self.desconecta_bd()
@@ -259,6 +260,30 @@ class funcoes:
                 cont += int(i[2])
 
             elif (str(i[4]) == 'V' and str(i[1]) == 'WEGE3'):
+                cont -= int(i[2])
+                #self.lucro_prejuizo = self.valor_total - (int(i[2]) * self.preco_medio)
+                
+        self.limpar_tela()
+        self.atualiza_tabela()
+        self.desconecta_bd()
+
+    def petr4(self):
+
+        cont = self.qtd
+        self.preco_medio = round(self.valor_total/self.qtd,2)
+        
+        self.tabela_dados.delete(*self.tabela_dados.get_children())
+        self.conecta_bd()
+        d = self.cursor.execute(""" SELECT data,ativo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_b3,valor_total,preco_medio,lucro_prejuizo
+            FROM bd ORDER BY DATE (data) ASC""")
+        for i in d:
+            self.tabela_dados.insert("",END,values=i)
+
+            if (str(i[4]) == 'C' and str(i[1]) == 'PETR4'):
+                self.preco_medio = round((int(i[8]) + (cont* self.preco_medio))/  (cont + int(i[2])),2)
+                cont += int(i[2])
+                
+            elif (str(i[4]) == 'V' and str(i[1]) == 'PETR4'):
                 cont = cont - int(i[2])
                 self.lucro_prejuizo = self.valor_total - (int(i[2]) * self.preco_medio)
                 
