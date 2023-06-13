@@ -222,7 +222,7 @@ class funcoes:
     def itsa4(self):
 
         cont = self.qtd
-        self.preco_medio = round(self.valor_total/self.qtd,2)
+        self.preco_medio = round((self.valor_total/self.qtd),2)
         
         self.tabela_dados.delete(*self.tabela_dados.get_children())
         self.conecta_bd()
@@ -232,11 +232,11 @@ class funcoes:
             self.tabela_dados.insert("",END,values=i)
 
             if (str(i[4]) == 'C' and str(i[1]) == 'ITSA4'):
-                self.preco_medio = round((int(i[8]) + (cont* self.preco_medio))/  (cont + int(i[2])),2)
-                cont += int(i[2])
+                self.preco_medio = round((int(i[8]) + (cont* self.preco_medio))/(cont + int(i[2])),2)
+                cont = cont + self.qtd
                 
-            elif (str(i[4]) == 'V' and str(i[1]) == 'ITSA4'):
-                cont -= int(i[2])
+            else:
+                cont = self.qtd
          
 
         self.limpar_tela()
@@ -246,7 +246,7 @@ class funcoes:
     def wege3(self):
 
         cont = self.qtd
-        self.preco_medio = round(self.valor_total/self.qtd,2)
+        self.preco_medio = round((self.valor_total/self.qtd),2)
         
         self.tabela_dados.delete(*self.tabela_dados.get_children())
         self.conecta_bd()
@@ -257,10 +257,10 @@ class funcoes:
 
             if (str(i[4]) == 'C' and str(i[1]) == 'WEGE3'):
                 self.preco_medio = round((int(i[8]) + (cont* self.preco_medio))/(cont + int(i[2])),2)
-                cont += int(i[2])
+                cont = cont + self.qtd
 
-            elif (str(i[4]) == 'V' and str(i[1]) == 'WEGE3'):
-                cont -= int(i[2])
+            else:
+                cont = self.qtd
                 #self.lucro_prejuizo = self.valor_total - (int(i[2]) * self.preco_medio)
                 
         self.limpar_tela()
