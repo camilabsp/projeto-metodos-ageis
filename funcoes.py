@@ -102,7 +102,7 @@ class funcoes:
         self.tabela_dados.delete(*self.tabela_dados.get_children())
         self.conecta_bd()
         l = self.cursor.execute(""" SELECT data,ativo,qtd,valor_unit,c_v,valor_operacao,tx_corret,tx_b3,valor_total,preco_medio,lucro_prejuizo
-            FROM bd ORDER BY DATE (data) ASC""")
+            FROM bd ORDER BY data ASC""")
         for i in l:
             self.tabela_dados.insert("",END,values=i)
 
@@ -189,8 +189,9 @@ class funcoes:
         for i in d:
             self.tabela_dados.insert("",END,values=i)
             if self.c_v == 'V':
-                self.lucro_prejuizo = self.valor_total - (float(i[2]) * self.preco_medio)
+                self.lucro_prejuizo = (self.valor_total - (self.qtd * self.preco_medio)) 
                 self.lucro_prejuizo = round(self.lucro_prejuizo)
+         
             elif self.c_v == 'C':
                 self.lucro_prejuizo = 0
                 
@@ -232,8 +233,8 @@ class funcoes:
             self.tabela_dados.insert("",END,values=i)
 
             if (str(i[4]) == 'C' and str(i[1]) == 'ITSA4'):
-                self.preco_medio = round((int(i[8]) + (cont* self.preco_medio))/(cont + int(i[2])),2)
-                cont = cont + self.qtd
+                self.preco_medio = round((float(i[8]) + (cont* self.preco_medio))/(cont + int(i[2])),2)
+                cont += self.qtd
                 
             else:
                 cont = self.qtd
@@ -256,12 +257,12 @@ class funcoes:
             self.tabela_dados.insert("",END,values=i)
 
             if (str(i[4]) == 'C' and str(i[1]) == 'WEGE3'):
-                self.preco_medio = round((int(i[8]) + (cont* self.preco_medio))/(cont + int(i[2])),2)
-                cont = cont + self.qtd
+                self.preco_medio = round((float(i[8]) + (cont * self.preco_medio))/(cont + self.qtd),2)
+                cont += self.qtd
 
             else:
                 cont = self.qtd
-                #self.lucro_prejuizo = self.valor_total - (int(i[2]) * self.preco_medio)
+                
                 
         self.limpar_tela()
         self.atualiza_tabela()
